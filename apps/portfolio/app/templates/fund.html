@@ -27,7 +27,7 @@
     </div>
     {% endif %}
 
-    <!-- Progress -->
+    <!-- Window + formula -->
     <div class="card progress-card">
       <div class="progress-meta">
         <div>
@@ -37,24 +37,82 @@
           </p>
         </div>
         <div>
-          <p class="muted small">Goal</p>
+          <p class="muted small">Goal (costs + $10)</p>
           <p class="stat muted">
             ${{ '%.2f'|format(campaign.stats.goal_cents / 100) }}
           </p>
         </div>
         <div>
-          <p class="muted small">Pledges</p>
-          <p class="stat" id="pledge-count">{{ campaign.stats.pledge_count }}</p>
+          <p class="muted small">Time left</p>
+          <p class="stat" id="time-left">{{ campaign.time.remaining_label }}</p>
         </div>
         <div>
           <p class="muted small">Status</p>
-          <p class="stat"><span class="badge badge-live">{{ campaign.status }}</span></p>
+          <p class="stat"><span class="badge badge-live">{{ campaign.status }} · 5-day</span></p>
         </div>
       </div>
       <div class="progress-bar" aria-label="Campaign progress">
         <div class="progress-fill" id="progress-fill" style="width: {{ campaign.stats.progress_pct }}%"></div>
       </div>
-      <p class="small muted" id="progress-label">{{ campaign.stats.progress_pct }}% of goal</p>
+      <p class="small muted" id="progress-label">
+        {{ campaign.stats.progress_pct }}% of goal ·
+        {{ campaign.stats.pledge_count }} pledges ·
+        ends {{ campaign.ends_at[:10] }} UTC
+      </p>
+      <p class="small muted">{{ campaign.goal_formula }}</p>
+    </div>
+
+    <!-- Economics transparency -->
+    <h2 class="mt-lg">Cost recovery &amp; profit floor</h2>
+    <div class="card-grid two">
+      <div class="card metric-card">
+        <p class="muted small">Ops costs covered</p>
+        <p class="stat">
+          ${{ '%.2f'|format(campaign.economics.cost_covered_cents / 100) }}
+          <span class="muted small">/ ${{ '%.2f'|format(campaign.economics.cost_total_cents / 100) }}</span>
+        </p>
+        <div class="progress-bar" aria-label="Cost coverage">
+          <div class="progress-fill" style="width: {{ campaign.economics.cost_coverage_pct }}%"></div>
+        </div>
+        <p class="small muted">{{ campaign.economics.cost_coverage_pct }}% of published 5-day ops costs</p>
+      </div>
+      <div class="card metric-card">
+        <p class="muted small">Profit floor progress (founder)</p>
+        <p class="stat">
+          ${{ '%.2f'|format(campaign.economics.surplus_after_costs_cents / 100) }}
+          <span class="muted small">/ ${{ '%.2f'|format(campaign.economics.profit_floor_cents / 100) }}</span>
+        </p>
+        <div class="progress-bar" aria-label="Profit floor progress">
+          <div class="progress-fill" style="width: {{ campaign.economics.profit_progress_pct }}%"></div>
+        </div>
+        <p class="small muted">
+          {% if campaign.economics.profit_floor_met %}Floor met · {% endif %}
+          Not a return to backers · not guaranteed
+        </p>
+      </div>
+    </div>
+
+    <div class="card mt-md">
+      <h3 class="h3">Published cost breakdown (5 days)</h3>
+      <ul class="fund-list">
+        {% for c in campaign.cost_breakdown %}
+        <li>
+          <span>
+            {{ c.label }}
+            <span class="small muted"> — {{ c.note }}</span>
+          </span>
+          <strong>${{ '%.2f'|format(c.cents / 100) }}</strong>
+        </li>
+        {% endfor %}
+        <li>
+          <span><strong>Total estimated costs</strong></span>
+          <strong>${{ '%.2f'|format(campaign.cost_total_cents / 100) }}</strong>
+        </li>
+        <li>
+          <span><strong>Profit floor (founder target)</strong></span>
+          <strong>${{ '%.2f'|format(campaign.profit_floor_cents / 100) }}</strong>
+        </li>
+      </ul>
     </div>
 
     <!-- Tiers -->

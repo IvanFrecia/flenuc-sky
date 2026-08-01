@@ -10,19 +10,44 @@
       <strong>Disclaimer:</strong> {{ snapshot.disclaimer }}
     </div>
 
-    <h2 class="mt-lg">Campaign metrics</h2>
+    <h2 class="mt-lg">5-day sprint metrics</h2>
     <div class="card-grid four">
       {% for m in snapshot.fund.metrics %}
       <div class="card metric-card">
         <p class="muted small">{{ m.label }}</p>
         <p class="stat">
           {% if m.unit == 'USD' %}${% endif %}{{ m.value }}{% if m.unit == '%' %}%{% endif %}
-          {% if m.unit not in ['USD', '%'] %}<span class="muted small"> {{ m.unit }}</span>{% endif %}
+          {% if m.unit not in ['USD', '%', ''] %}<span class="muted small"> {{ m.unit }}</span>{% endif %}
         </p>
         <p class="small muted">{{ m.note }}</p>
       </div>
       {% endfor %}
     </div>
+
+    {% if snapshot.fund.economics %}
+    <h2 class="mt-lg">Founder economics (transparent)</h2>
+    <div class="card">
+      <ul class="fund-list">
+        <li>
+          <span>Raised</span>
+          <strong>${{ '%.2f'|format(snapshot.fund.economics.raised_cents / 100) }}</strong>
+        </li>
+        <li>
+          <span>Published ops costs</span>
+          <strong>${{ '%.2f'|format(snapshot.fund.economics.cost_total_cents / 100) }}</strong>
+        </li>
+        <li>
+          <span>Surplus after costs</span>
+          <strong>${{ '%.2f'|format(snapshot.fund.economics.surplus_after_costs_cents / 100) }}</strong>
+        </li>
+        <li>
+          <span>Profit floor met?</span>
+          <strong>{{ 'Yes' if snapshot.fund.economics.profit_floor_met else 'Not yet' }}</strong>
+        </li>
+      </ul>
+      <p class="small muted">{{ snapshot.fund.economics.note }}</p>
+    </div>
+    {% endif %}
 
     <h2 class="mt-lg">Use of funds (targets)</h2>
     <div class="card">

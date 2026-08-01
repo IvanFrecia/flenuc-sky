@@ -5,75 +5,185 @@ from __future__ import annotations
 import json
 import threading
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
 from app.config import get_settings
 
-# Campaign defaults (demo) — rewards only, NOT equity
+# Fixed launch window: 5-day rewards sprint (UTC).
+# Goal = published ops cost estimate + $10 profit floor (not a valuation).
+_CAMPAIGN_START = datetime(2026, 8, 1, 20, 0, 0, tzinfo=timezone.utc)
+_CAMPAIGN_END = _CAMPAIGN_START + timedelta(days=5)
+
+# Transparent cost model for this sprint (USD cents)
+COST_BREAKDOWN: list[dict[str, Any]] = [
+    {
+        "id": "cloud_run",
+        "label": "Cloud Run (5d, scale-to-zero, light traffic)",
+        "cents": 500,
+        "note": "Estimate; actual bill may be lower under free-tier allowances",
+    },
+    {
+        "id": "artifact_registry",
+        "label": "Container image storage",
+        "cents": 100,
+        "note": "Artifact Registry retention for deploy images",
+    },
+    {
+        "id": "logging_monitoring",
+        "label": "Logging & monitoring",
+        "cents": 100,
+        "note": "Cloud Logging / Monitoring beyond free quota buffer",
+    },
+    {
+        "id": "payment_reserve",
+        "label": "Payment processing reserve",
+        "cents": 200,
+        "note": "Stripe/network fees if live payments enabled",
+    },
+    {
+        "id": "contingency",
+        "label": "Ops contingency",
+        "cents": 100,
+        "note": "Buffer for traffic spikes or redeploys",
+    },
+]
+COST_TOTAL_CENTS = sum(int(c["cents"]) for c in COST_BREAKDOWN)  # $10.00
+PROFIT_FLOOR_CENTS = 1_000  # $10.00 minimum profit target
+GOAL_CENTS = COST_TOTAL_CENTS + PROFIT_FLOOR_CENTS  # $20.00
+
+# Campaign — rewards only, NOT equity
 CAMPAIGN: dict[str, Any] = {
-    "id": "skylabs-rewards-2026",
-    "title": "SkyLabs Rewards Campaign",
-    "tagline": "Back multi-model systems R&D — earn rewards, not equity.",
+    "id": "skylabs-rewards-5d-202608",
+    "title": "5-Day SkyLabs Rewards Sprint",
+    "tagline": "Cover real ops costs + a $10 profit floor — rewards only, not equity.",
     "currency": "USD",
-    "goal_cents": 2_500_000,  # $25,000
+    "goal_cents": GOAL_CENTS,
     "status": "live",
+    "duration_days": 5,
+    "starts_at": _CAMPAIGN_START.isoformat(),
+    "ends_at": _CAMPAIGN_END.isoformat(),
+    "cost_total_cents": COST_TOTAL_CENTS,
+    "profit_floor_cents": PROFIT_FLOOR_CENTS,
+    "cost_breakdown": COST_BREAKDOWN,
+    "goal_formula": "goal = estimated_5d_ops_costs ($10) + profit_floor ($10) = $20",
     "disclaimer": (
         "This is a rewards / pre-order style campaign. Contributions are NOT equity, "
-        "securities, or investment contracts. There is NO guaranteed profit and NO assured ROI. "
+        "securities, or investment contracts. There is NO guaranteed profit to backers and NO assured ROI. "
+        "The $10 profit floor is a founder target after published cost recovery — not a promise to contributors. "
         "You receive the stated reward (if any), not ownership or profit share."
     ),
     "use_of_funds": [
-        {"category": "Product R&D (sky-colab & multi-model tooling)", "pct": 40},
-        {"category": "Infrastructure & compute", "pct": 25},
-        {"category": "Security, compliance & legal templates", "pct": 15},
-        {"category": "Community, docs & support", "pct": 12},
-        {"category": "Operations & contingency", "pct": 8},
+        {"category": "Cover published 5-day ops costs", "pct": 50},
+        {"category": "Founder profit floor (target ≥ $10)", "pct": 50},
     ],
     "tiers": [
         {
-            "id": "supporter",
-            "name": "Supporter",
-            "price_cents": 1500,
-            "description": "Thank-you credit on the transparency page + exclusive progress email updates.",
-            "perks": ["Name on supporters list (optional)", "Quarterly update emails"],
+            "id": "cheer",
+            "name": "Cheer",
+            "price_cents": 500,
+            "description": "Quick boost toward cost recovery. Optional public thank-you.",
+            "perks": ["Optional name on transparency ledger", "Campaign update email"],
             "limit": None,
         },
         {
-            "id": "early-access",
-            "name": "Early Access",
-            "price_cents": 4900,
-            "description": "Early access invite to sky-colab beta features when released.",
-            "perks": ["Everything in Supporter", "Beta access queue priority", "Private changelog"],
-            "limit": 200,
+            "id": "supporter",
+            "name": "Supporter",
+            "price_cents": 1000,
+            "description": "Covers ~half the ops stack for the sprint + thank-you credit.",
+            "perks": ["Everything in Cheer", "Supporter badge on fund page"],
+            "limit": None,
         },
         {
             "id": "builder",
             "name": "Builder",
-            "price_cents": 14900,
-            "description": "Builder kit: templates, architecture notes, and a 30-min async Q&A credit.",
+            "price_cents": 2500,
+            "description": "Push past cost recovery into the profit floor + early Sky Colab notes.",
             "perks": [
-                "Everything in Early Access",
-                "Architecture notes pack",
-                "One async Q&A (written, 30 min equivalent)",
+                "Everything in Supporter",
+                "Sky Colab architecture one-pager PDF",
+                "Priority reply on GitHub Discussions (7 days)",
             ],
-            "limit": 50,
+            "limit": 40,
         },
         {
             "id": "sponsor",
             "name": "Sponsor",
-            "price_cents": 49900,
-            "description": "Sponsor recognition + optional logo on campaign page + priority roadmap input.",
+            "price_cents": 5000,
+            "description": "Sponsor the full sprint goal alone + roadmap shout-out.",
             "perks": [
                 "Everything in Builder",
-                "Sponsor recognition on fund page",
-                "Roadmap input session (async)",
+                "Sponsor recognition on fund + home pages",
+                "30-min async written Q&A credit",
             ],
-            "limit": 15,
+            "limit": 10,
         },
     ],
 }
+
+
+def campaign_time_state(now: datetime | None = None) -> dict[str, Any]:
+    """Countdown / window state for UI and KPI."""
+    now = now or datetime.now(timezone.utc)
+    if now.tzinfo is None:
+        now = now.replace(tzinfo=timezone.utc)
+    starts = _CAMPAIGN_START
+    ends = _CAMPAIGN_END
+    total_s = (ends - starts).total_seconds()
+    if now < starts:
+        phase = "scheduled"
+        remaining_s = (starts - now).total_seconds()
+        elapsed_s = 0.0
+    elif now > ends:
+        phase = "ended"
+        remaining_s = 0.0
+        elapsed_s = total_s
+    else:
+        phase = "live"
+        remaining_s = (ends - now).total_seconds()
+        elapsed_s = (now - starts).total_seconds()
+    days = int(remaining_s // 86400)
+    hours = int((remaining_s % 86400) // 3600)
+    minutes = int((remaining_s % 3600) // 60)
+    return {
+        "phase": phase,
+        "starts_at": starts.isoformat(),
+        "ends_at": ends.isoformat(),
+        "remaining_seconds": int(max(0, remaining_s)),
+        "elapsed_seconds": int(max(0, elapsed_s)),
+        "remaining_label": f"{days}d {hours}h {minutes}m",
+        "window_progress_pct": round(min(100.0, (elapsed_s / total_s) * 100.0), 1) if total_s else 0.0,
+    }
+
+
+def economics(stats: dict[str, Any]) -> dict[str, Any]:
+    """Cost recovery + profit-floor tracking (founder economics, not backer returns)."""
+    raised = int(stats.get("raised_cents", 0))
+    costs = COST_TOTAL_CENTS
+    profit_floor = PROFIT_FLOOR_CENTS
+    cost_covered = min(raised, costs)
+    surplus = max(0, raised - costs)
+    cost_coverage_pct = round((cost_covered / costs) * 100.0, 1) if costs else 0.0
+    profit_progress_pct = round(min(100.0, (surplus / profit_floor) * 100.0), 1) if profit_floor else 0.0
+    shortfall_to_goal = max(0, GOAL_CENTS - raised)
+    return {
+        "raised_cents": raised,
+        "cost_total_cents": costs,
+        "cost_covered_cents": cost_covered,
+        "cost_coverage_pct": cost_coverage_pct,
+        "surplus_after_costs_cents": surplus,
+        "profit_floor_cents": profit_floor,
+        "profit_progress_pct": profit_progress_pct,
+        "profit_floor_met": surplus >= profit_floor,
+        "costs_covered": raised >= costs,
+        "goal_met": raised >= GOAL_CENTS,
+        "shortfall_to_goal_cents": shortfall_to_goal,
+        "note": (
+            "Founder economics only: surplus after published costs is tracked against a $10 "
+            "profit floor. This is not a return to backers and is not guaranteed."
+        ),
+    }
 
 
 class FundLedger:
@@ -241,9 +351,17 @@ def campaign_payload() -> dict[str, Any]:
     ledger = get_ledger()
     stats = ledger.stats()
     settings = get_settings()
+    time_state = campaign_time_state()
+    # Soft-close: still accept demo after end, but mark phase ended for UI
+    status = CAMPAIGN["status"]
+    if time_state["phase"] == "ended" and status == "live":
+        status = "ended"
     return {
         **CAMPAIGN,
+        "status": status,
         "stats": stats,
+        "time": time_state,
+        "economics": economics(stats),
         "demo_mode": settings.is_demo_mode,
         "stripe_publishable_key": settings.stripe_publishable_key,
     }

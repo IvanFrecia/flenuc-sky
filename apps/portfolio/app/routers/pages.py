@@ -10,6 +10,7 @@ from app.config import APP_DIR, get_settings
 from app.services.fund import campaign_payload, get_ledger
 from app.services.kpi import kpi_snapshot
 from app.services.legal import render_legal_html, LEGAL_SLUGS
+from app.services.social import get_social
 
 templates = Jinja2Templates(directory=str(APP_DIR / "templates"))
 router = APIRouter(tags=["pages"])
@@ -30,6 +31,7 @@ def _ctx(**extra):
             "Ivan Frecia · SkyLabs — multi-model systems, portfolio, and rewards campaign.",
         ),
         "og_image": extra.pop("og_image", "/static/img/og-default.png"),
+        "social": get_social(),
     }
     base.update(extra)
     return base
@@ -67,24 +69,58 @@ def about(request: Request):
 
 @router.get("/work", response_class=HTMLResponse)
 def work(request: Request):
+    # Public repos only (IvanFrecia). No private client brands.
     projects = [
         {
-            "title": "Pending approval #1",
-            "summary": "Confidential client engagement — details pending public approval.",
-            "tags": ["Systems", "Integration"],
-            "status": "Private",
+            "title": "Sky Colab",
+            "summary": (
+                "Multi-model collaboration with transparent work-product boards: "
+                "structured handoffs, challenge mode, audit trail. CLI duo · Apache-2.0."
+            ),
+            "tags": ["Multi-agent", "Python", "Transparency", "OSS"],
+            "status": "Open source",
+            "url": "https://github.com/IvanFrecia/sky-colab",
         },
         {
-            "title": "Pending approval #2",
-            "summary": "Confidential client engagement — details pending public approval.",
-            "tags": ["AI", "Platform"],
-            "status": "Private",
+            "title": "Pred Sys Sky Fútbol",
+            "summary": (
+                "Beacon-anchored football predictive system — ratings, outcomes, "
+                "and financial potential analysis. Local-first · MIT."
+            ),
+            "tags": ["ML", "Sports", "Python", "MIT"],
+            "status": "Open source",
+            "url": "https://github.com/IvanFrecia/pred-sys-sky-futbol",
         },
         {
-            "title": "Pending approval #3",
-            "summary": "Confidential client engagement — details pending public approval.",
-            "tags": ["Cloud", "Ops"],
-            "status": "Private",
+            "title": "Motion Detection Tracking",
+            "summary": (
+                "Sports video motion detection with a smooth virtual-camera viewport "
+                "that follows primary action. Python · OpenCV · NumPy."
+            ),
+            "tags": ["Computer vision", "OpenCV", "Python"],
+            "status": "Open source",
+            "url": "https://github.com/IvanFrecia/motion_detection_tracking",
+        },
+        {
+            "title": "Self-hosted rotating VPN (lab)",
+            "summary": "Learning project for self-hosted, rotating VPN free-tier patterns.",
+            "tags": ["Infra", "Networking", "Lab"],
+            "status": "Open source",
+            "url": "https://github.com/IvanFrecia/self_hosted-rotating_vpn-free-tier",
+        },
+        {
+            "title": "LSTM stock notebook",
+            "summary": "LSTM forecasting notebook (AMZN/NVDA-style market series exploration).",
+            "tags": ["Deep learning", "Time series", "Notebook"],
+            "status": "Open source",
+            "url": "https://github.com/IvanFrecia/LSTM_NVDA_STOCK_NOTEBOOK",
+        },
+        {
+            "title": "Web structure Angular",
+            "summary": "Angular Material + UnoCSS + SSR structure reference for modern web apps.",
+            "tags": ["Angular", "SSR", "Frontend"],
+            "status": "Open source",
+            "url": "https://github.com/IvanFrecia/web-structure-angular",
         },
     ]
     return render(

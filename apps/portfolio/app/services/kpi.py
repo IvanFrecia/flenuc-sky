@@ -46,20 +46,37 @@ def kpi_snapshot() -> dict[str, Any]:
     stats = ledger.stats()
     campaign = campaign_payload()
 
+    econ = campaign.get("economics") or {}
+    time_state = campaign.get("time") or {}
+
     fund_metrics = [
         {
             "id": "raised",
-            "label": "Rewards campaign raised",
+            "label": "Rewards sprint raised",
             "value": round(stats["raised_cents"] / 100, 2),
             "unit": "USD",
             "note": "Sum of demo + confirmed pledges only",
         },
         {
             "id": "goal",
-            "label": "Campaign goal",
+            "label": "Sprint goal (costs + $10 floor)",
             "value": round(stats["goal_cents"] / 100, 2),
             "unit": "USD",
-            "note": "Soft goal for transparency; not a valuation",
+            "note": campaign.get("goal_formula", "costs + profit floor"),
+        },
+        {
+            "id": "cost_coverage",
+            "label": "Ops cost coverage",
+            "value": econ.get("cost_coverage_pct", 0),
+            "unit": "%",
+            "note": "Raised applied to published 5-day ops costs first",
+        },
+        {
+            "id": "profit_floor",
+            "label": "Profit floor progress (founder)",
+            "value": econ.get("profit_progress_pct", 0),
+            "unit": "%",
+            "note": "Surplus after costs vs $10 floor — not a backer return",
         },
         {
             "id": "progress",
@@ -75,6 +92,13 @@ def kpi_snapshot() -> dict[str, Any]:
             "unit": "pledges",
             "note": "Includes demo pledges when Stripe is disabled",
         },
+        {
+            "id": "time_left",
+            "label": "Campaign time remaining",
+            "value": time_state.get("remaining_label", "—"),
+            "unit": "",
+            "note": f"Phase: {time_state.get('phase', '—')} · ends {campaign.get('ends_at', '')[:10]}",
+        },
     ]
 
     return {
@@ -82,6 +106,7 @@ def kpi_snapshot() -> dict[str, Any]:
         "disclaimer": (
             "These metrics are operational and campaign transparency indicators only. "
             "They are NOT financial advice, profit forecasts, or guaranteed outcomes. "
+            "The founder profit floor is an internal target after cost recovery — not a return to backers. "
             "Rewards campaign contributions are NOT equity or securities. "
             "Past or current figures do not imply future performance or ROI."
         ),
@@ -89,7 +114,11 @@ def kpi_snapshot() -> dict[str, Any]:
             "campaign_id": campaign["id"],
             "status": campaign["status"],
             "demo_mode": campaign["demo_mode"],
+            "duration_days": campaign.get("duration_days"),
             "metrics": fund_metrics,
+            "economics": econ,
+            "time": time_state,
+            "cost_breakdown": campaign.get("cost_breakdown", []),
             "by_tier": stats.get("by_tier", {}),
             "use_of_funds": campaign["use_of_funds"],
         },
@@ -99,5 +128,6 @@ def kpi_snapshot() -> dict[str, Any]:
         "health": {
             "api": "ok",
             "ledger": "ok",
+            "host": "skylabs-devops (interim; flenuc-sky pending billing quota)",
         },
     }

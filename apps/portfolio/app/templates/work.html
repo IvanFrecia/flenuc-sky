@@ -5,28 +5,39 @@
     <p class="eyebrow">Portfolio</p>
     <h1>Work</h1>
     <p class="lead muted">
-      Public cards are limited until client approval. No named clients on this page.
+      Named projects below are <strong>public open-source</strong> under
+      <a href="https://github.com/IvanFrecia" rel="noopener noreferrer" target="_blank">IvanFrecia</a>.
+      Private client work stays off this page until written approval.
     </p>
 
     <div class="card-grid three">
       {% for p in projects %}
       <article class="card project-card">
         <div class="badge">{{ p.status }}</div>
-        <h2 class="h3">{{ p.title }}</h2>
+        <h2 class="h3">
+          {% if p.url %}
+          <a href="{{ p.url }}" rel="noopener noreferrer" target="_blank">{{ p.title }}</a>
+          {% else %}
+          {{ p.title }}
+          {% endif %}
+        </h2>
         <p class="muted">{{ p.summary }}</p>
         <ul class="tag-list">
           {% for t in p.tags %}
           <li>{{ t }}</li>
           {% endfor %}
         </ul>
+        {% if p.url %}
+        <p class="small"><a href="{{ p.url }}" rel="noopener noreferrer" target="_blank">View on GitHub →</a></p>
+        {% endif %}
       </article>
       {% endfor %}
     </div>
 
     <div class="callout mt-lg">
       <p>
-        Open product work: <a href="/sky-colab">sky-colab</a> ·
-        <a href="https://github.com/IvanFrecia/sky-colab" rel="noopener noreferrer" target="_blank">GitHub</a>
+        Flagship product: <a href="/sky-colab">Sky Colab</a> ·
+        <a href="https://github.com/IvanFrecia/sky-colab" rel="noopener noreferrer" target="_blank">github.com/IvanFrecia/sky-colab</a>
       </p>
     </div>
   </div>
