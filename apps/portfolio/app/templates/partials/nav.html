@@ -1,0 +1,28 @@
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="/" aria-label="{{ site_name }} home">
+      <img class="brand-avatar" src="/static/img/avatar.png" width="36" height="36" alt="" />
+      <span class="brand-text">
+        <span class="brand-name">Ivan Frecia</span>
+        <span class="brand-sub">SkyLabs</span>
+      </span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
+      <span class="sr-only">Menu</span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </button>
+
+    <nav id="site-nav" class="site-nav" data-nav>
+      <a href="/" class="{% if nav_active == 'home' %}is-active{% endif %}">Home</a>
+      <a href="/about" class="{% if nav_active == 'about' %}is-active{% endif %}">About</a>
+      <a href="/work" class="{% if nav_active == 'work' %}is-active{% endif %}">Work</a>
+      <a href="/sky-colab" class="{% if nav_active == 'sky-colab' %}is-active{% endif %}">sky-colab</a>
+      <a href="/fund" class="{% if nav_active == 'fund' %}is-active{% endif %}">Fund</a>
+      <a href="/kpi" class="{% if nav_active == 'kpi' %}is-active{% endif %}">KPI</a>
+      <a href="/contact" class="{% if nav_active == 'contact' %}is-active{% endif %}">Contact</a>
+    </nav>
+  </div>
+</header>

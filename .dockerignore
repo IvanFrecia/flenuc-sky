@@ -1,0 +1,14 @@
+**/.venv
+**/__pycache__
+**/*.pyc
+**/.git
+**/.env
+**/.env.*
+**/data/ledger.json
+**/node_modules
+**/.pytest_cache
+**/.mypy_cache
+.git
+.idea
+.vscode
+*.log

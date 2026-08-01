@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container narrow">
+    <p class="eyebrow">Legal</p>
+    <h1>Legal documents</h1>
+    <p class="lead muted">Templates for transparency — not a substitute for legal counsel.</p>
+    <ul class="link-list">
+      <li><a href="/legal/privacy">Privacy Policy</a></li>
+      <li><a href="/legal/terms">Terms of Use</a></li>
+      <li><a href="/legal/rewards">Rewards Campaign Terms</a></li>
+      <li><a href="/legal/risk">Risk Disclosures</a></li>
+      <li><a href="/legal/refunds">Refund Policy</a></li>
+    </ul>
+    <p class="small muted mt-lg">
+      Contact: <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>
+    </p>
+  </div>
+</section>
+{% endblock %}

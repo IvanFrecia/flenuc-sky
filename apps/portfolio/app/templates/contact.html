@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container narrow">
+    <p class="eyebrow">Contact</p>
+    <h1>Get in touch</h1>
+    <p class="lead">
+      For product, partnership, or campaign questions:
+    </p>
+    <div class="card">
+      <p class="h3">Email</p>
+      <p>
+        <a class="text-link lg" href="mailto:{{ contact_email }}">{{ contact_email }}</a>
+      </p>
+      <p class="muted small mt-md">
+        Please do not send confidential client data unless we have an NDA in place.
+      </p>
+    </div>
+    <p class="muted small mt-lg">
+      Legal documents: <a href="/legal">/legal</a>
+    </p>
+  </div>
+</section>
+{% endblock %}

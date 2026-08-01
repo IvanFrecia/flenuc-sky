@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <p class="eyebrow">Dashboard</p>
+    <h1>KPI snapshot</h1>
+    <p class="lead muted">As of {{ snapshot.as_of[:19] }} UTC</p>
+
+    <div class="banner banner-warn" role="alert">
+      <strong>Disclaimer:</strong> {{ snapshot.disclaimer }}
+    </div>
+
+    <h2 class="mt-lg">Campaign metrics</h2>
+    <div class="card-grid four">
+      {% for m in snapshot.fund.metrics %}
+      <div class="card metric-card">
+        <p class="muted small">{{ m.label }}</p>
+        <p class="stat">
+          {% if m.unit == 'USD' %}${% endif %}{{ m.value }}{% if m.unit == '%' %}%{% endif %}
+          {% if m.unit not in ['USD', '%'] %}<span class="muted small"> {{ m.unit }}</span>{% endif %}
+        </p>
+        <p class="small muted">{{ m.note }}</p>
+      </div>
+      {% endfor %}
+    </div>
+
+    <h2 class="mt-lg">Use of funds (targets)</h2>
+    <div class="card">
+      <ul class="fund-list">
+        {% for u in snapshot.fund.use_of_funds %}
+        <li>
+          <span>{{ u.category }}</span>
+          <strong>{{ u.pct }}%</strong>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <h2 class="mt-lg">Product metrics</h2>
+    <div class="card-grid two">
+      {% for m in snapshot.product.metrics %}
+      <div class="card metric-card">
+        <p class="muted small">{{ m.label }}</p>
+        <p class="stat">{{ m.value }} <span class="muted small">{{ m.unit }}</span></p>
+        <p class="small muted">{{ m.note }}</p>
+      </div>
+      {% endfor %}
+    </div>
+
+    <p class="small muted mt-lg">
+      JSON API: <a href="/api/kpi/snapshot">/api/kpi/snapshot</a>
+      {% if snapshot.fund.demo_mode %} · Demo mode active{% endif %}
+    </p>
+  </div>
+</section>
+{% endblock %}

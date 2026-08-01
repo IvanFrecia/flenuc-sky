@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow">Ivan Frecia · SkyLabs</p>
+      <h1>Multi-model systems for real products</h1>
+      <p class="lead">
+        I design and ship applied AI systems — orchestration, evaluation, and
+        operator-friendly tooling under <strong>SkyLabs Developments</strong>.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="/sky-colab">Explore sky-colab</a>
+        <a class="btn btn-ghost" href="/fund">Rewards campaign</a>
+      </div>
+      <p class="small muted hero-note">
+        Portfolio work shown publicly is either open-source or approved for disclosure.
+      </p>
+    </div>
+    <div class="hero-card card">
+      <img class="hero-avatar" src="/static/img/avatar.png" width="120" height="120" alt="Ivan Frecia" />
+      <h2 class="h3">Focus areas</h2>
+      <ul class="checklist">
+        <li>Multi-model orchestration &amp; routing</li>
+        <li>Evaluation loops &amp; observability</li>
+        <li>Cloud-native delivery (Cloud Run ready)</li>
+        <li>Rewards-backed R&amp;D (not equity)</li>
+      </ul>
+      <a class="text-link" href="/about">About Ivan →</a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2>What you’ll find here</h2>
+    <div class="card-grid three">
+      <a class="card card-link" href="/work">
+        <h3>Work</h3>
+        <p class="muted">Selected projects and scaffolds. Client names withheld until approval.</p>
+      </a>
+      <a class="card card-link" href="/fund">
+        <h3>Fund</h3>
+        <p class="muted">Rewards / pre-order campaign with transparent ledger. Not securities.</p>
+      </a>
+      <a class="card card-link" href="/kpi">
+        <h3>KPI</h3>
+        <p class="muted">Operational metrics and campaign progress — with clear disclaimers.</p>
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}

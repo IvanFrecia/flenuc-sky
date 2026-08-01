@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container narrow">
+    <p class="eyebrow">About</p>
+    <h1>Ivan Frecia</h1>
+    <p class="lead">
+      Founder and engineer at <strong>SkyLabs Developments</strong>. I build systems
+      that combine multiple models, deterministic tooling, and clear operator UX.
+    </p>
+
+    <div class="prose">
+      <h2>Approach</h2>
+      <p>
+        Prefer simple deployable surfaces, strong observability, and honest product copy.
+        Client work stays private until written approval. Open work lives in public repos
+        such as <a href="https://github.com/IvanFrecia/sky-colab" rel="noopener noreferrer" target="_blank">sky-colab</a>.
+      </p>
+
+      <h2>SkyLabs</h2>
+      <p>
+        SkyLabs is the product and R&amp;D home for multi-model collaboration tooling,
+        evaluation patterns, and delivery templates suitable for Cloud Run and similar
+        platforms.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Email: <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>
+      </p>
+    </div>
+  </div>
+</section>
+{% endblock %}

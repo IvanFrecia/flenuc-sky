@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+.env
+.env.*
+!.env.example
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Node (if any)
+node_modules/
+.next/
+out/
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Runtime / local data
+/tmp/
+*.log
+apps/portfolio/data/ledger.json
+apps/portfolio/data/*.local.json
+
+# Secrets
+*.pem
+*.key
+credentials.json
+service-account*.json
+
+# Docker
+.docker/
+data/*.json
+.env
+.venv
+__pycache__
+*.pyc
+.pytest_cache

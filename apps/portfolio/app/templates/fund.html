@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <p class="eyebrow">Rewards campaign</p>
+    <h1>{{ campaign.title }}</h1>
+    <p class="lead">{{ campaign.tagline }}</p>
+
+    <div class="banner banner-warn" role="status">
+      <strong>Important:</strong> {{ campaign.disclaimer }}
+      See also <a href="/legal/rewards">Rewards terms</a>,
+      <a href="/legal/risk">Risk</a>, and
+      <a href="/legal/refunds">Refunds</a>.
+    </div>
+
+    {% if success %}
+    <div class="banner banner-ok" role="status">Thank you — if payment completed, it will appear in the ledger shortly.</div>
+    {% endif %}
+    {% if canceled %}
+    <div class="banner banner-muted" role="status">Checkout canceled. No charge was made.</div>
+    {% endif %}
+
+    {% if campaign.demo_mode %}
+    <div class="banner banner-info" role="status">
+      <strong>Demo mode:</strong> Stripe is not configured. You can record demo pledges
+      (no real payment) to exercise the ledger and KPI dashboard.
+    </div>
+    {% endif %}
+
+    <!-- Progress -->
+    <div class="card progress-card">
+      <div class="progress-meta">
+        <div>
+          <p class="muted small">Raised</p>
+          <p class="stat" id="raised-display">
+            ${{ '%.2f'|format(campaign.stats.raised_cents / 100) }}
+          </p>
+        </div>
+        <div>
+          <p class="muted small">Goal</p>
+          <p class="stat muted">
+            ${{ '%.2f'|format(campaign.stats.goal_cents / 100) }}
+          </p>
+        </div>
+        <div>
+          <p class="muted small">Pledges</p>
+          <p class="stat" id="pledge-count">{{ campaign.stats.pledge_count }}</p>
+        </div>
+        <div>
+          <p class="muted small">Status</p>
+          <p class="stat"><span class="badge badge-live">{{ campaign.status }}</span></p>
+        </div>
+      </div>
+      <div class="progress-bar" aria-label="Campaign progress">
+        <div class="progress-fill" id="progress-fill" style="width: {{ campaign.stats.progress_pct }}%"></div>
+      </div>
+      <p class="small muted" id="progress-label">{{ campaign.stats.progress_pct }}% of goal</p>
+    </div>
+
+    <!-- Tiers -->
+    <h2 class="mt-lg">Reward tiers</h2>
+    <div class="card-grid two" id="tier-grid">
+      {% for t in campaign.tiers %}
+      <article class="card tier-card" data-tier-id="{{ t.id }}">
+        <div class="tier-head">
+          <h3>{{ t.name }}</h3>
+          <p class="price">${{ '%.0f'|format(t.price_cents / 100) }} <span class="muted small">USD</span></p>
+        </div>
+        <p class="muted">{{ t.description }}</p>
+        <ul class="checklist">
+          {% for perk in t.perks %}
+          <li>{{ perk }}</li>
+          {% endfor %}
+        </ul>
+        {% if t.limit %}
+        <p class="small muted">Limited: {{ t.limit }} available</p>
+        {% endif %}
+        <button type="button" class="btn btn-primary btn-block" data-pledge="{{ t.id }}">
+          {% if campaign.demo_mode %}Demo pledge{% else %}Pledge{% endif %}
+        </button>
+      </article>
+      {% endfor %}
+    </div>
+
+    <!-- Use of funds -->
+    <h2 class="mt-lg">Use of funds</h2>
+    <div class="card">
+      <ul class="fund-list">
+        {% for u in campaign.use_of_funds %}
+        <li>
+          <span>{{ u.category }}</span>
+          <strong>{{ u.pct }}%</strong>
+        </li>
+        {% endfor %}
+      </ul>
+      <p class="small muted">Allocations are targets for transparency, not fixed guarantees.</p>
+    </div>
+
+    <!-- Ledger -->
+    <h2 class="mt-lg">Transparency ledger</h2>
+    <div class="card">
+      <div class="table-wrap">
+        <table class="data-table" id="ledger-table">
+          <thead>
+            <tr>
+              <th>When</th>
+              <th>Name</th>
+              <th>Tier</th>
+              <th>Amount</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if ledger_entries %}
+              {% for e in ledger_entries %}
+              <tr>
+                <td class="small">{{ e.created_at[:19] if e.created_at else '—' }}</td>
+                <td>{{ e.display_name }}</td>
+                <td>{{ e.tier_name }}</td>
+                <td>${{ '%.2f'|format(e.amount_cents / 100) }}</td>
+                <td><span class="badge">{{ e.status }}</span></td>
+              </tr>
+              {% endfor %}
+            {% else %}
+              <tr><td colspan="5" class="muted">No pledges yet.</td></tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted mt-md">
+        API: <a href="/api/fund/campaign">/api/fund/campaign</a> ·
+        <a href="/api/fund/ledger">/api/fund/ledger</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Demo pledge modal -->
+<dialog id="pledge-dialog" class="dialog">
+  <form method="dialog" id="pledge-form" class="dialog-body">
+    <h2>Record pledge</h2>
+    <p class="muted small" id="pledge-dialog-note">
+      {% if campaign.demo_mode %}
+      Demo mode: no payment will be charged. Entry is stored in the local ledger.
+      {% else %}
+      You will be redirected to secure checkout.
+      {% endif %}
+    </p>
+    <input type="hidden" name="tier_id" id="pledge-tier-id" />
+    <label class="field">
+      <span>Display name (optional)</span>
+      <input type="text" name="display_name" id="pledge-name" maxlength="64" placeholder="Anonymous" />
+    </label>
+    <label class="field">
+      <span>Email (optional)</span>
+      <input type="email" name="email" id="pledge-email" maxlength="254" placeholder="you@example.com" />
+    </label>
+    <label class="field checkbox">
+      <input type="checkbox" name="public" id="pledge-public" />
+      <span>Show my display name on the public ledger</span>
+    </label>
+    <p class="small muted" id="pledge-error" hidden></p>
+    <div class="dialog-actions">
+      <button type="submit" class="btn btn-primary" id="pledge-submit" value="confirm">Confirm</button>
+      <button type="submit" class="btn btn-ghost" value="cancel">Cancel</button>
+    </div>
+  </form>
+</dialog>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  window.__FUND__ = {
+    demoMode: {{ 'true' if campaign.demo_mode else 'false' }},
+  };
+</script>
+<script src="/static/js/fund.js" defer></script>
+{% endblock %}
