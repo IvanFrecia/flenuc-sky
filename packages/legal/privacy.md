@@ -1,8 +1,8 @@
 # Privacy Policy
 
 **Last updated:** 2026-08-01  
-**Operator:** Ivan Frecia / SkyLabs Developments  
-**Contact:** ifrecia@skylabs-developments.tech
+**Operator:** Ivan Frecia (individual)  
+**Contact:** freciaivan@gmail.com
 
 This policy describes how this website (the “Site”) handles information.
 
@@ -37,7 +37,7 @@ Logs and pledge records are retained as needed for campaign fulfillment, legal c
 
 ## Your rights
 
-Depending on your jurisdiction, you may request access, correction, or deletion of personal data we hold. Contact **ifrecia@skylabs-developments.tech**.
+Depending on your jurisdiction, you may request access, correction, or deletion of personal data we hold. Contact **freciaivan@gmail.com**.
 
 ## Children
 
@@ -49,5 +49,5 @@ We may update this policy. The “Last updated” date will change. Continued us
 
 ## Contact
 
-Ivan Frecia / SkyLabs Developments  
-Email: ifrecia@skylabs-developments.tech
+Ivan Frecia  
+Email: freciaivan@gmail.com

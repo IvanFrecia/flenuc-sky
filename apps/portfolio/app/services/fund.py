@@ -55,8 +55,8 @@ GOAL_CENTS = COST_TOTAL_CENTS + PROFIT_FLOOR_CENTS  # $20.00
 
 # Campaign — rewards only, NOT equity
 CAMPAIGN: dict[str, Any] = {
-    "id": "skylabs-rewards-5d-202608",
-    "title": "5-Day SkyLabs Rewards Sprint",
+    "id": "ivan-frecia-rewards-5d-202608",
+    "title": "Ivan Frecia · 5-Day Rewards Sprint",
     "tagline": "Cover real ops costs + a $10 profit floor — rewards only, not equity.",
     "currency": "USD",
     "goal_cents": GOAL_CENTS,

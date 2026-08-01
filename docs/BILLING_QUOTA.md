@@ -1,9 +1,9 @@
 # Billing quota blocker — flenuc-sky
 
 ## Status
-- Project `flenuc-sky` (**276614846326**) created under org skylabs-developments.tech
-- Link to billing account `013E4C-2C3967-D5AD20` (skylabs) **FAILED**: Cloud billing **project quota exceeded**
-- Currently billed projects (5):
+- Project `flenuc-sky` (**276614846326**) created under GCP org resource (technical id; not portfolio brand)
+- Link to billing account `013E4C-2C3967-D5AD20` **FAILED**: Cloud billing **project quota exceeded**
+- Currently billed projects (5) — **GCP project IDs only** (infra, not marketing brand):
   1. skylabs-devops
   2. molisud-cereales-pro
   3. moli-pwa-production
@@ -26,8 +26,9 @@ https://support.google.com/code/contact/billing_quota_increase
 gcloud billing projects link flenuc-sky --billing-account=013E4C-2C3967-D5AD20
 ```
 
-### C) Temporary deploy into skylabs-devops
+### C) Temporary deploy into interim GCP project `skylabs-devops`
 Deploy service `sky-portfolio` there with labels `app=sky-portfolio,owner=ivan-frecia` until flenuc-sky has billing.
+(Project id is technical; portfolio brand is Ivan Frecia personal only.)
 
 ## After billing links
 

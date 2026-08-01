@@ -128,6 +128,6 @@ def kpi_snapshot() -> dict[str, Any]:
         "health": {
             "api": "ok",
             "ledger": "ok",
-            "host": "skylabs-devops (interim; flenuc-sky pending billing quota)",
+            "host": "Cloud Run interim host (flenuc-sky pending billing quota)",
         },
     }

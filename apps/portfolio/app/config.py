@@ -47,8 +47,8 @@ class Settings(BaseSettings):
     stripe_publishable_key: str | None = None
 
     ledger_path: str | None = None
-    contact_email: str = "ifrecia@skylabs-developments.tech"
-    site_name: str = "Ivan Frecia · SkyLabs"
+    contact_email: str = "freciaivan@gmail.com"
+    site_name: str = "Ivan Frecia"
     copyright_year: int = 2026
 
     @property

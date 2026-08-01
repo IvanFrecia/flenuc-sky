@@ -1,8 +1,8 @@
 # Rewards Campaign Terms
 
 **Last updated:** 2026-08-01  
-**Operator:** Ivan Frecia / SkyLabs Developments  
-**Contact:** ifrecia@skylabs-developments.tech
+**Operator:** Ivan Frecia (individual)  
+**Contact:** freciaivan@gmail.com
 
 ## Nature of the campaign
 
@@ -11,7 +11,7 @@ This campaign is a **rewards / pre-order style** program. Backers contribute mon
 ### Explicit non-securities / non-equity statement
 
 - Contributions are **NOT equity**, shares, membership interests, tokens representing ownership, or other **securities**.
-- Contributors receive **no ownership** of SkyLabs Developments, Ivan Frecia’s businesses, or related intellectual property solely by pledging.
+- Contributors receive **no ownership** of Ivan Frecia’s businesses, personal projects, or related intellectual property solely by pledging.
 - Contributors receive **no profit share**, dividend, revenue share, or residual claim on business results.
 - There is **NO guaranteed profit** and **NO assured ROI**. Do not pledge expecting financial return.
 
@@ -43,4 +43,4 @@ You are responsible for any taxes applicable to your contribution or rewards in 
 
 ## Contact
 
-Questions: ifrecia@skylabs-developments.tech
+Questions: freciaivan@gmail.com

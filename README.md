@@ -1,6 +1,6 @@
 # Flenuc Sky
 
-**Ivan Frecia · SkyLabs Developments** — portfolio site, rewards campaign, KPI dashboard, and legal pages. Single FastAPI service, Cloud Run ready.
+**Ivan Frecia** — personal portfolio site, rewards campaign, KPI dashboard, and legal pages. Single FastAPI service, Cloud Run ready.
 
 > Rewards are **not equity/securities**. **No guaranteed profit** / **no assured ROI**.
 
@@ -28,9 +28,9 @@ uvicorn app.main:app --host 0.0.0.0 --port 8080 --reload
 
 | Path | Description |
 |------|-------------|
-| `/` | Hero — Ivan Frecia · SkyLabs · multi-model systems |
+| `/` | Hero — Ivan Frecia · multi-model systems |
 | `/about` | About |
-| `/work` | Project cards (pending approval #1–3) |
+| `/work` | Project cards (public OSS) |
 | `/sky-colab` | Product page → github.com/IvanFrecia/sky-colab |
 | `/fund` | Rewards campaign, tiers, ledger |
 | `/kpi` | Metrics + disclaimer banner |
@@ -100,5 +100,5 @@ flenuc-sky/
 
 ## Contact
 
-**ifrecia@skylabs-developments.tech**  
-© 2026 Ivan Frecia / SkyLabs Developments
+**freciaivan@gmail.com**  
+© 2026 Ivan Frecia

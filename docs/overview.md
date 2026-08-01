@@ -2,7 +2,7 @@
 
 Single-service MVP for:
 
-1. Personal + SkyLabs portfolio site  
+1. Personal portfolio site (Ivan Frecia)  
 2. Rewards / pre-order crowdfunding (not equity)  
 3. KPI dashboard with non-guarantee disclaimers  
 4. Legal template pages  
@@ -18,10 +18,10 @@ Single-service MVP for:
 
 | Field | Value |
 |-------|-------|
-| Goal | $25,000 USD |
-| Tiers | Supporter $15, Early Access $49, Builder $149, Sponsor $499 |
+| Campaign id | `ivan-frecia-rewards-5d-202608` |
+| Goal | ops costs + $10 profit floor (see fund service) |
 | Status | live |
-| Contact | ifrecia@skylabs-developments.tech |
+| Contact | freciaivan@gmail.com |
 
 ## Security notes
 

@@ -13,11 +13,11 @@ _DEFAULT: dict[str, Any] = {
     "github": "https://github.com/IvanFrecia",
     "github_sky_colab": "https://github.com/IvanFrecia/sky-colab",
     "website": "https://sky-portfolio-6k4smyyquq-uc.a.run.app",
-    "blog": "https://skylabs-developments.tech/",
-    "x": "https://x.com/SkyLabsDev",
-    "x_handle": "@SkyLabsDev",
+    "blog": "https://sky-portfolio-6k4smyyquq-uc.a.run.app",
+    "x": "https://x.com/IvanFrecia",
+    "x_handle": "@IvanFrecia",
     "linkedin": "https://www.linkedin.com/in/ivanfrecia",
-    "email": "ifrecia@skylabs-developments.tech",
+    "email": "freciaivan@gmail.com",
 }
 
 

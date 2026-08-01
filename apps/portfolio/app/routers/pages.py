@@ -28,7 +28,7 @@ def _ctx(**extra):
         "page_title": extra.pop("page_title", settings.site_name),
         "page_description": extra.pop(
             "page_description",
-            "Ivan Frecia · SkyLabs — multi-model systems, portfolio, and rewards campaign.",
+            "Ivan Frecia — multi-model systems, personal portfolio, and rewards campaign.",
         ),
         "og_image": extra.pop("og_image", "/static/img/og-default.png"),
         "social": get_social(),
@@ -52,8 +52,8 @@ def home(request: Request):
         request,
         "home.html",
         nav_active="home",
-        page_title="Ivan Frecia · SkyLabs",
-        page_description="Multi-model systems, applied AI engineering, and SkyLabs product work.",
+        page_title="Ivan Frecia",
+        page_description="Multi-model systems, applied AI engineering, and personal product work.",
     )
 
 
@@ -63,7 +63,7 @@ def about(request: Request):
         request,
         "about.html",
         nav_active="about",
-        page_title="About · Ivan Frecia / SkyLabs",
+        page_title="About · Ivan Frecia",
     )
 
 
@@ -127,7 +127,7 @@ def work(request: Request):
         request,
         "work.html",
         nav_active="work",
-        page_title="Work · Ivan Frecia / SkyLabs",
+        page_title="Work · Ivan Frecia",
         projects=projects,
     )
 
@@ -138,8 +138,8 @@ def sky_colab(request: Request):
         request,
         "sky_colab.html",
         nav_active="sky-colab",
-        page_title="sky-colab · SkyLabs",
-        page_description="sky-colab — multi-model collaboration tooling by SkyLabs.",
+        page_title="sky-colab · Ivan Frecia",
+        page_description="sky-colab — multi-model collaboration tooling by Ivan Frecia.",
     )
 
 
@@ -151,8 +151,8 @@ def fund(request: Request):
         request,
         "fund.html",
         nav_active="fund",
-        page_title="Rewards Campaign · SkyLabs",
-        page_description="Support SkyLabs R&D with rewards tiers. Not equity. No guaranteed profit.",
+        page_title="Rewards Campaign · Ivan Frecia",
+        page_description="Support personal R&D with rewards tiers. Not equity. No guaranteed profit.",
         campaign=campaign,
         ledger_entries=ledger.public_ledger(limit=30),
         success=request.query_params.get("success"),
@@ -167,7 +167,7 @@ def kpi_page(request: Request):
         request,
         "kpi.html",
         nav_active="kpi",
-        page_title="KPI Dashboard · SkyLabs",
+        page_title="KPI Dashboard · Ivan Frecia",
         page_description="Operational metrics and campaign transparency. Not financial guarantees.",
         snapshot=snap,
     )
@@ -179,7 +179,7 @@ def contact(request: Request):
         request,
         "contact.html",
         nav_active="contact",
-        page_title="Contact · Ivan Frecia / SkyLabs",
+        page_title="Contact · Ivan Frecia",
     )
 
 
@@ -189,7 +189,7 @@ def legal_index(request: Request):
         request,
         "legal/index.html",
         nav_active="legal",
-        page_title="Legal · SkyLabs",
+        page_title="Legal · Ivan Frecia",
         slugs=list(LEGAL_SLUGS.keys()),
     )
 
@@ -205,7 +205,7 @@ def legal_page(request: Request, slug: str):
             "legal/page.html",
             status_code=404,
             nav_active="legal",
-            page_title="Legal · SkyLabs",
+            page_title="Legal · Ivan Frecia",
             legal_title="Document unavailable",
             legal_html="<p>This document could not be loaded.</p>",
         )
@@ -214,7 +214,7 @@ def legal_page(request: Request, slug: str):
         request,
         "legal/page.html",
         nav_active="legal",
-        page_title=f"{title} · SkyLabs",
+        page_title=f"{title} · Ivan Frecia",
         legal_title=title,
         legal_html=html,
     )

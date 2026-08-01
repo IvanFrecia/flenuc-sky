@@ -42,7 +42,7 @@ def create_checkout_session(
                     "currency": CAMPAIGN["currency"].lower(),
                     "unit_amount": int(tier["price_cents"]),
                     "product_data": {
-                        "name": f"SkyLabs Rewards — {tier['name']}",
+                        "name": f"Ivan Frecia Rewards — {tier['name']}",
                         "description": (
                             "Rewards/pre-order contribution. NOT equity or securities. "
                             "No guaranteed profit or ROI."

@@ -1,8 +1,8 @@
 # Risk Disclosures
 
 **Last updated:** 2026-08-01  
-**Operator:** Ivan Frecia / SkyLabs Developments  
-**Contact:** ifrecia@skylabs-developments.tech
+**Operator:** Ivan Frecia (individual)  
+**Contact:** freciaivan@gmail.com
 
 Please read carefully before pledging or relying on Site metrics.
 
@@ -39,4 +39,4 @@ These disclosures are **templates for transparency**, not comprehensive legal ad
 
 ## Contact
 
-ifrecia@skylabs-developments.tech
+freciaivan@gmail.com

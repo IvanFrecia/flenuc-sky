@@ -1,14 +1,17 @@
-# Domain: skylabs-developments.com (Hostinger → Cloud Run)
+# Domain you own: skylabs-developments.com (Hostinger → Cloud Run)
+
+> **Note:** This is a **personal domain you own**, not a corporate organization site. The portfolio brand is **Ivan Frecia**. Prefer the Cloud Run `*.run.app` URL for day-to-day links until custom DNS is intentional.
 
 ## Prerequisites
 - Project `flenuc-sky` with **billing linked**
 - Cloud Run service `sky-portfolio` (prod) deployed in `us-central1`
-- Access to Hostinger DNS for `skylabs-developments.com`
+- Access to Hostinger DNS for the domain you own (`skylabs-developments.com`)
 
 ## 1. Map domain on GCP
 
 ```bash
 gcloud config set project flenuc-sky
+# Technical GCP login account (not public contact):
 gcloud config set account ifrecia@skylabs-developments.tech
 
 # Modern approach: domain mapping / load balancer
@@ -55,3 +58,5 @@ Wait for Google-managed certificate (can take 15–60 min after DNS propagates).
 ## Interim URL
 
 Until DNS is ready, use the `*.run.app` URL printed by `gcloud run services describe sky-portfolio`.
+
+**Public contact:** freciaivan@gmail.com

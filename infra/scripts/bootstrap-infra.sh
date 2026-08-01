@@ -2,6 +2,7 @@
 set -euo pipefail
 PROJECT="${PROJECT:-flenuc-sky}"
 REGION="${REGION:-us-central1}"
+# Technical GCP login (not public portfolio contact; public = freciaivan@gmail.com)
 ACCOUNT="${ACCOUNT:-ifrecia@skylabs-developments.tech}"
 BILLING="${BILLING:-013E4C-2C3967-D5AD20}"
 

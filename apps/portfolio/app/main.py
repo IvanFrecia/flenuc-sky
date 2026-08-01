@@ -14,7 +14,7 @@ from app.routers import api, pages
 settings = get_settings()
 
 app = FastAPI(
-    title="Flenuc Sky — Ivan Frecia / SkyLabs",
+    title="Flenuc Sky — Ivan Frecia",
     version=__version__,
     docs_url="/api/docs" if settings.env != "production" else None,
     redoc_url=None,

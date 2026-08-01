@@ -1,3 +1,3 @@
-"""Flenuc Sky — Ivan Frecia / SkyLabs portfolio + rewards fund."""
+"""Flenuc Sky — Ivan Frecia personal portfolio + rewards fund."""
 
 __version__ = "0.1.0"

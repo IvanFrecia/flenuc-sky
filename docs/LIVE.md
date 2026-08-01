@@ -5,7 +5,7 @@
 | Item | Value |
 |------|--------|
 | Service | `sky-portfolio` |
-| Project | `skylabs-devops` (billing active) |
+| Project | `skylabs-devops` (GCP project id; interim host with billing) |
 | Target project | `flenuc-sky` (created; **billing blocked by 5-project quota**) |
 | Region | `us-central1` |
 | URL | https://sky-portfolio-6k4smyyquq-uc.a.run.app |
