@@ -5,20 +5,31 @@
 | Item | Value |
 |------|--------|
 | Service | `sky-portfolio` |
-| Project | `skylabs-devops` (GCP project id; interim host with billing) |
-| Target project | `flenuc-sky` (created; **billing blocked by 5-project quota**) |
+| Project | interim GCP project with billing (see deploy defaults) |
+| Target project | `flenuc-sky` (created; billing blocked by project quota) |
 | Region | `us-central1` |
 | URL | https://sky-portfolio-6k4smyyquq-uc.a.run.app |
 | Alt URL | https://sky-portfolio-125699337180.us-central1.run.app |
-| Mode | `DEMO_MODE=true` (rewards demo ledger; Stripe optional) |
-| Domain | Pending Hostinger DNS → see DOMAIN_HOSTINGER.md |
+| Mode | Demo ledger when Stripe unset |
+| Domain | Pending custom DNS → see DOMAIN_HOSTINGER.md |
 
 ## GitHub
-- Portfolio (private): https://github.com/IvanFrecia/flenuc-sky
+
+- Portfolio (public OSS): https://github.com/IvanFrecia/flenuc-sky
 - Sky Colab OSS: https://github.com/IvanFrecia/sky-colab
 
+## Deploy
+
+```bash
+# Defaults: live service sky-portfolio on interim host
+make deploy
+# or
+./infra/scripts/deploy-stg.sh
+```
+
 ## Migrate to flenuc-sky when billing links
-1. Resolve docs/BILLING_QUOTA.md
-2. `./infra/scripts/bootstrap-infra.sh`
-3. Deploy with `PROJECT=flenuc-sky ./infra/scripts/deploy-stg.sh` then prod
+
+1. Resolve docs/BILLING_QUOTA.md (operator notes; may contain internal IDs)
+2. `./infra/scripts/bootstrap-infra.sh` (requires `BILLING` env)
+3. `PROJECT_ID=flenuc-sky SERVICE=flenuc-sky-web ./infra/scripts/deploy-stg.sh`
 4. Remap domain

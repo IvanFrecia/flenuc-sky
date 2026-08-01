@@ -1,0 +1,68 @@
+name: Deploy Cloud Run
+
+# Automated deploys require Workload Identity Federation secrets on the repo:
+#   GCP_WORKLOAD_IDENTITY_PROVIDER, GCP_SERVICE_ACCOUNT
+# Until then, deploy from a trusted workstation:
+#   make deploy
+#   # or: PROJECT_ID=skylabs-devops SERVICE=sky-portfolio ./infra/scripts/deploy-stg.sh
+
+on:
+  workflow_dispatch:
+    inputs:
+      project_id:
+        description: "GCP project id"
+        required: true
+        default: "skylabs-devops"
+      service:
+        description: "Cloud Run service name"
+        required: true
+        default: "sky-portfolio"
+      region:
+        description: "Region"
+        required: true
+        default: "us-central1"
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      PROJECT_ID: ${{ github.event.inputs.project_id }}
+      SERVICE: ${{ github.event.inputs.service }}
+      REGION: ${{ github.event.inputs.region }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Require WIF secrets
+        env:
+          WIF: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          SA: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+        run: |
+          if [[ -z "${WIF}" || -z "${SA}" ]]; then
+            echo "::error::Missing secrets GCP_WORKLOAD_IDENTITY_PROVIDER / GCP_SERVICE_ACCOUNT."
+            echo "Deploy locally: make deploy"
+            exit 1
+          fi
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Deploy
+        run: |
+          chmod +x infra/scripts/deploy-stg.sh
+          PROJECT_ID="${PROJECT_ID}" \
+          SERVICE="${SERVICE}" \
+          REGION="${REGION}" \
+          IMAGE="gcr.io/${PROJECT_ID}/${SERVICE}:$(git rev-parse --short HEAD)" \
+          ./infra/scripts/deploy-stg.sh

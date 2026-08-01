@@ -2,7 +2,7 @@
 
 ## Status
 - Project `flenuc-sky` (**276614846326**) created under GCP org resource (technical id; not portfolio brand)
-- Link to billing account `013E4C-2C3967-D5AD20` **FAILED**: Cloud billing **project quota exceeded**
+- Link to billing account `${BILLING}  # set locally, never commit` **FAILED**: Cloud billing **project quota exceeded**
 - Currently billed projects (5) — **GCP project IDs only** (infra, not marketing brand):
   1. skylabs-devops
   2. molisud-cereales-pro
@@ -23,7 +23,7 @@ https://support.google.com/code/contact/billing_quota_increase
 ```bash
 # Example only after you name the project to free:
 # gcloud billing projects unlink PROJECT_ID
-gcloud billing projects link flenuc-sky --billing-account=013E4C-2C3967-D5AD20
+gcloud billing projects link flenuc-sky --billing-account=${BILLING}  # set locally, never commit
 ```
 
 ### C) Temporary deploy into interim GCP project `skylabs-devops`

@@ -3,18 +3,26 @@ set -euo pipefail
 PROJECT="${PROJECT:-flenuc-sky}"
 REGION="${REGION:-us-central1}"
 # Technical GCP login (not public portfolio contact; public = freciaivan@gmail.com)
-ACCOUNT="${ACCOUNT:-ifrecia@skylabs-developments.tech}"
-BILLING="${BILLING:-013E4C-2C3967-D5AD20}"
+ACCOUNT="${ACCOUNT:-}"
+# Never commit real billing account IDs — pass BILLING=XXXXXX-XXXXXX-XXXXXX
+BILLING="${BILLING:-}"
 
-gcloud config set account "$ACCOUNT"
+if [[ -n "${ACCOUNT}" ]]; then
+  gcloud config set account "$ACCOUNT"
+fi
 gcloud config set project "$PROJECT"
 gcloud config set run/region "$REGION"
 
 # Link billing (fails if quota full)
-gcloud billing projects link "$PROJECT" --billing-account="$BILLING" || {
-  echo "Billing link failed — see docs/BILLING_QUOTA.md" >&2
-  exit 1
-}
+if [[ -z "${BILLING}" ]]; then
+  echo "Set BILLING=ACCOUNT_ID to link billing (see docs/BILLING_QUOTA.md)" >&2
+  echo "Continuing without billing link…" >&2
+else
+  gcloud billing projects link "$PROJECT" --billing-account="$BILLING" || {
+    echo "Billing link failed — see docs/BILLING_QUOTA.md" >&2
+    exit 1
+  }
+fi
 
 gcloud services enable \
   run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com \

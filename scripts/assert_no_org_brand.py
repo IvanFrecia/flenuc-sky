@@ -50,8 +50,11 @@ for path in iter_files():
             bad.append(f"{path.relative_to(ROOT)}:{i}: {line.strip()[:120]}")
             continue
         if FORBIDDEN_SKYLABS_WORD.search(line) and "Sky Colab" not in line and "sky-colab" not in line.lower():
-            # allow sky-colab product paths
-            if "sky-colab" in line.lower() or "sky_colab" in line.lower():
+            # allow sky-colab product paths and technical GCP project/service ids
+            low = line.lower()
+            if "sky-colab" in low or "sky_colab" in low:
+                continue
+            if "skylabs-devops" in low or "skylabs-developments.tech" in low:
                 continue
             bad.append(f"{path.relative_to(ROOT)}:{i}: {line.strip()[:120]}")
 
